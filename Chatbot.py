@@ -1,10 +1,12 @@
 from openai import OpenAI
 import streamlit as st
 
+MOONSHOT_KEY = "sk-mvGbid4ChELTfaEqhnVfPzLz0ua8nOe82MrsgGiDUzxqOlvw"
+
+openai_api_key = MOONSHOT_KEY
 with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password", value=MOONSHOT_KEY)
     "[获取API Key](https://platform.openai.com/account/api-keys)"
-    "[返回Promptate](https://promptate.vercel.app/)"
 
 st.title("💬 Promptate 聊天机器人")
 st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
@@ -22,7 +24,7 @@ if prompt := st.chat_input():
     client = OpenAI(api_key=openai_api_key)
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
-    response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
+    response = client.chat.completions.create(model="moonshot-v1-8k", messages=st.session_state.messages)
     msg = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": msg})
     st.chat_message("assistant").write(msg)
